@@ -1,0 +1,323 @@
+{
+  "step": 5,
+  "step_name": "analysis_and_visualization",
+  "timestamp_utc": "2026-10-12T04:02:51.043291+00:00",
+  "input_file": "C:\\Personal\\Swapnil\\Training\\GenAI\\NewlineAiAccelerator\\Unit 5 Synthetic Datasets and Data Engineering\\mini-project\\diy-repair-project\\data\\baseline\\judged_20261012_035629.jsonl",
+  "total_records": 23,
+  "human": {
+    "count": 20,
+    "dimension_pass_rates": {
+      "answer_completeness": 1.0,
+      "safety_specificity": 1.0,
+      "tool_realism": 1.0,
+      "scope_appropriateness": 1.0,
+      "context_clarity": 1.0,
+      "tip_usefulness": 1.0
+    },
+    "overall_pass_rate": 1.0
+  },
+  "judge": {
+    "count": 23,
+    "dimension_pass_rates": {
+      "answer_completeness": 0.7391,
+      "safety_specificity": 0.6957,
+      "tool_realism": 1.0,
+      "scope_appropriateness": 1.0,
+      "context_clarity": 1.0,
+      "tip_usefulness": 0.9565
+    },
+    "overall_pass_rate": 0.6957
+  },
+  "agreement": {
+    "paired_count": 20,
+    "dimension_agreement": {
+      "answer_completeness": 0.7,
+      "safety_specificity": 0.7,
+      "tool_realism": 1.0,
+      "scope_appropriateness": 1.0,
+      "context_clarity": 1.0,
+      "tip_usefulness": 0.95
+    },
+    "target": 0.8,
+    "all_dimensions_meet_target": false
+  },
+  "category_distribution": {
+    "appliance_repair": {
+      "count": 5,
+      "percentage": 0.2174,
+      "benchmark_percentage": 0.2
+    },
+    "plumbing_repair": {
+      "count": 4,
+      "percentage": 0.1739,
+      "benchmark_percentage": 0.2
+    },
+    "electrical_repair": {
+      "count": 5,
+      "percentage": 0.2174,
+      "benchmark_percentage": 0.2
+    },
+    "hvac_maintenance": {
+      "count": 5,
+      "percentage": 0.2174,
+      "benchmark_percentage": 0.2
+    },
+    "general_home_repair": {
+      "count": 4,
+      "percentage": 0.1739,
+      "benchmark_percentage": 0.2
+    }
+  },
+  "segments": {
+    "by_category": {
+      "appliance_repair": {
+        "count": 5,
+        "human": {
+          "count": 5,
+          "dimension_pass_rates": {
+            "answer_completeness": 1.0,
+            "safety_specificity": 1.0,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 1.0
+          },
+          "overall_pass_rate": 1.0
+        },
+        "judge": {
+          "count": 5,
+          "dimension_pass_rates": {
+            "answer_completeness": 0.8,
+            "safety_specificity": 0.8,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 0.8
+          },
+          "overall_pass_rate": 0.8
+        },
+        "agreement": {
+          "paired_count": 5,
+          "dimension_agreement": {
+            "answer_completeness": 0.8,
+            "safety_specificity": 0.8,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 0.8
+          },
+          "target": 0.8,
+          "all_dimensions_meet_target": true
+        }
+      },
+      "electrical_repair": {
+        "count": 5,
+        "human": {
+          "count": 5,
+          "dimension_pass_rates": {
+            "answer_completeness": 1.0,
+            "safety_specificity": 1.0,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 1.0
+          },
+          "overall_pass_rate": 1.0
+        },
+        "judge": {
+          "count": 5,
+          "dimension_pass_rates": {
+            "answer_completeness": 0.8,
+            "safety_specificity": 0.8,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 1.0
+          },
+          "overall_pass_rate": 0.8
+        },
+        "agreement": {
+          "paired_count": 5,
+          "dimension_agreement": {
+            "answer_completeness": 0.8,
+            "safety_specificity": 0.8,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 1.0
+          },
+          "target": 0.8,
+          "all_dimensions_meet_target": true
+        }
+      },
+      "general_home_repair": {
+        "count": 4,
+        "human": {
+          "count": 1,
+          "dimension_pass_rates": {
+            "answer_completeness": 1.0,
+            "safety_specificity": 1.0,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 1.0
+          },
+          "overall_pass_rate": 1.0
+        },
+        "judge": {
+          "count": 4,
+          "dimension_pass_rates": {
+            "answer_completeness": 0.75,
+            "safety_specificity": 0.5,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 1.0
+          },
+          "overall_pass_rate": 0.5
+        },
+        "agreement": {
+          "paired_count": 1,
+          "dimension_agreement": {
+            "answer_completeness": 0.0,
+            "safety_specificity": 0.0,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 1.0
+          },
+          "target": 0.8,
+          "all_dimensions_meet_target": false
+        }
+      },
+      "hvac_maintenance": {
+        "count": 5,
+        "human": {
+          "count": 5,
+          "dimension_pass_rates": {
+            "answer_completeness": 1.0,
+            "safety_specificity": 1.0,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 1.0
+          },
+          "overall_pass_rate": 1.0
+        },
+        "judge": {
+          "count": 5,
+          "dimension_pass_rates": {
+            "answer_completeness": 0.6,
+            "safety_specificity": 0.6,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 1.0
+          },
+          "overall_pass_rate": 0.6
+        },
+        "agreement": {
+          "paired_count": 5,
+          "dimension_agreement": {
+            "answer_completeness": 0.6,
+            "safety_specificity": 0.6,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 1.0
+          },
+          "target": 0.8,
+          "all_dimensions_meet_target": false
+        }
+      },
+      "plumbing_repair": {
+        "count": 4,
+        "human": {
+          "count": 4,
+          "dimension_pass_rates": {
+            "answer_completeness": 1.0,
+            "safety_specificity": 1.0,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 1.0
+          },
+          "overall_pass_rate": 1.0
+        },
+        "judge": {
+          "count": 4,
+          "dimension_pass_rates": {
+            "answer_completeness": 0.75,
+            "safety_specificity": 0.75,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 1.0
+          },
+          "overall_pass_rate": 0.75
+        },
+        "agreement": {
+          "paired_count": 4,
+          "dimension_agreement": {
+            "answer_completeness": 0.75,
+            "safety_specificity": 0.75,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 1.0
+          },
+          "target": 0.8,
+          "all_dimensions_meet_target": false
+        }
+      }
+    },
+    "by_prompt_variant": {
+      "generator_v1": {
+        "count": 23,
+        "human": {
+          "count": 20,
+          "dimension_pass_rates": {
+            "answer_completeness": 1.0,
+            "safety_specificity": 1.0,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 1.0
+          },
+          "overall_pass_rate": 1.0
+        },
+        "judge": {
+          "count": 23,
+          "dimension_pass_rates": {
+            "answer_completeness": 0.7391,
+            "safety_specificity": 0.6957,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 0.9565
+          },
+          "overall_pass_rate": 0.6957
+        },
+        "agreement": {
+          "paired_count": 20,
+          "dimension_agreement": {
+            "answer_completeness": 0.7,
+            "safety_specificity": 0.7,
+            "tool_realism": 1.0,
+            "scope_appropriateness": 1.0,
+            "context_clarity": 1.0,
+            "tip_usefulness": 0.95
+          },
+          "target": 0.8,
+          "all_dimensions_meet_target": false
+        }
+      }
+    }
+  },
+  "charts": {
+    "dimension_pass_rates": "C:\\Personal\\Swapnil\\Training\\GenAI\\NewlineAiAccelerator\\Unit 5 Synthetic Datasets and Data Engineering\\mini-project\\diy-repair-project\\data\\baseline\\visualizations\\dimension_pass_rates_20261012_040251.png",
+    "human_llm_agreement": "C:\\Personal\\Swapnil\\Training\\GenAI\\NewlineAiAccelerator\\Unit 5 Synthetic Datasets and Data Engineering\\mini-project\\diy-repair-project\\data\\baseline\\visualizations\\human_llm_agreement_20261012_040251.png",
+    "category_distribution": "C:\\Personal\\Swapnil\\Training\\GenAI\\NewlineAiAccelerator\\Unit 5 Synthetic Datasets and Data Engineering\\mini-project\\diy-repair-project\\data\\baseline\\visualizations\\category_distribution_20261012_040251.png",
+    "segment_heatmap": "C:\\Personal\\Swapnil\\Training\\GenAI\\NewlineAiAccelerator\\Unit 5 Synthetic Datasets and Data Engineering\\mini-project\\diy-repair-project\\data\\baseline\\visualizations\\segment_heatmap_20261012_040251.png"
+  }
+}

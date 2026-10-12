@@ -1,0 +1,305 @@
+{
+  "step": 2,
+  "step_name": "data_quality_gate",
+  "timestamp_utc": "2026-10-05T05:17:31.229558+00:00",
+  "input_file": "C:\\Personal\\Swapnil\\Training\\GenAI\\NewlineAiAccelerator\\Unit 5 Synthetic Datasets and Data Engineering\\mini-project\\diy-repair-project\\data\\baseline\\generated_qa_20261004180340.jsonl",
+  "output_file": "C:\\Personal\\Swapnil\\Training\\GenAI\\NewlineAiAccelerator\\Unit 5 Synthetic Datasets and Data Engineering\\mini-project\\diy-repair-project\\data\\baseline\\gated_20261005_051731.jsonl",
+  "report_file": "C:\\Personal\\Swapnil\\Training\\GenAI\\NewlineAiAccelerator\\Unit 5 Synthetic Datasets and Data Engineering\\mini-project\\diy-repair-project\\data\\baseline\\gate_report_20261005_051731.json",
+  "total_records": 25,
+  "structural_validation": {
+    "valid_count": 0,
+    "invalid_count": 25,
+    "validation_rate": 0.0,
+    "target_rate": 0.95,
+    "passed_target": false,
+    "failures": {
+      "0": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "1": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "2": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "3": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "4": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "5": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "6": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "7": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "8": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "9": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "10": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "11": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "12": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "13": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "14": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "15": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "16": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "17": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "18": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "19": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "20": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "21": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "22": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "23": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ],
+      "24": [
+        "question: Field required",
+        "answer: Field required",
+        "equipment_problem: Field required",
+        "tools_required: Field required",
+        "steps: Field required",
+        "safety_info: Field required",
+        "tips: Field required"
+      ]
+    }
+  },
+  "exact_deduplication": {
+    "duplicate_count": 0,
+    "duplicates": []
+  },
+  "semantic_deduplication": {
+    "enabled": true,
+    "threshold": 0.9,
+    "duplicate_count": 0,
+    "duplicates": []
+  },
+  "category_distribution": {
+    "passed": false,
+    "total_records": 0,
+    "categories": {
+      "appliance_repair": {
+        "count": 0,
+        "percentage": 0.0,
+        "target_percentage": 0.2,
+        "minimum_percentage": 0.18000000000000002,
+        "maximum_percentage": 0.22,
+        "passed": false
+      },
+      "electrical_repair": {
+        "count": 0,
+        "percentage": 0.0,
+        "target_percentage": 0.2,
+        "minimum_percentage": 0.18000000000000002,
+        "maximum_percentage": 0.22,
+        "passed": false
+      },
+      "general_home_repair": {
+        "count": 0,
+        "percentage": 0.0,
+        "target_percentage": 0.2,
+        "minimum_percentage": 0.18000000000000002,
+        "maximum_percentage": 0.22,
+        "passed": false
+      },
+      "hvac_maintenance": {
+        "count": 0,
+        "percentage": 0.0,
+        "target_percentage": 0.2,
+        "minimum_percentage": 0.18000000000000002,
+        "maximum_percentage": 0.22,
+        "passed": false
+      },
+      "plumbing_repair": {
+        "count": 0,
+        "percentage": 0.0,
+        "target_percentage": 0.2,
+        "minimum_percentage": 0.18000000000000002,
+        "maximum_percentage": 0.22,
+        "passed": false
+      }
+    },
+    "unexpected_categories": []
+  },
+  "quality_gate": {
+    "passed_count": 0,
+    "failed_count": 25,
+    "pass_rate": 0.0
+  }
+}

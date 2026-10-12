@@ -1,0 +1,96 @@
+{
+  "step": 2,
+  "step_name": "data_quality_gate",
+  "timestamp_utc": "2026-10-12T02:30:50.822314+00:00",
+  "input_file": "C:\\Personal\\Swapnil\\Training\\GenAI\\NewlineAiAccelerator\\Unit 5 Synthetic Datasets and Data Engineering\\mini-project\\diy-repair-project\\data\\baseline\\generated_qa_20261012002210.jsonl",
+  "output_file": "C:\\Personal\\Swapnil\\Training\\GenAI\\NewlineAiAccelerator\\Unit 5 Synthetic Datasets and Data Engineering\\mini-project\\diy-repair-project\\data\\baseline\\gated_20261012_023049.jsonl",
+  "report_file": "C:\\Personal\\Swapnil\\Training\\GenAI\\NewlineAiAccelerator\\Unit 5 Synthetic Datasets and Data Engineering\\mini-project\\diy-repair-project\\data\\baseline\\gate_report_20261012_023049.json",
+  "total_records": 25,
+  "structural_validation": {
+    "valid_count": 25,
+    "invalid_count": 0,
+    "validation_rate": 1.0,
+    "target_rate": 0.95,
+    "passed_target": true,
+    "failures": {}
+  },
+  "exact_deduplication": {
+    "duplicate_count": 0,
+    "duplicates": []
+  },
+  "semantic_deduplication": {
+    "enabled": true,
+    "threshold": 0.9,
+    "duplicate_count": 2,
+    "duplicates": [
+      {
+        "duplicate_record_index": 8,
+        "original_record_index": 7,
+        "duplicate_question": "My kitchen faucet has been dripping continuously from the spout even after I turn the handle completely off. This wastes water and sounds annoying, so I want to stop it myself without calling a plumber immediately if possible.",
+        "original_question": "My kitchen faucet has been dripping steadily even when I turn the handle off completely. How can I stop the leak without calling a plumber?",
+        "similarity": 0.9365,
+        "threshold": 0.9
+      },
+      {
+        "duplicate_record_index": 21,
+        "original_record_index": 7,
+        "duplicate_question": "My kitchen faucet is constantly dripping even after I turn the handle off. It wastes water and makes a annoying noise. How can I stop the drip myself?",
+        "original_question": "My kitchen faucet has been dripping steadily even when I turn the handle off completely. How can I stop the leak without calling a plumber?",
+        "similarity": 0.935,
+        "threshold": 0.9
+      }
+    ]
+  },
+  "category_distribution": {
+    "passed": true,
+    "total_records": 25,
+    "categories": {
+      "appliance_repair": {
+        "count": 5,
+        "percentage": 0.2,
+        "target_percentage": 0.2,
+        "minimum_percentage": 0.18000000000000002,
+        "maximum_percentage": 0.22,
+        "passed": true
+      },
+      "electrical_repair": {
+        "count": 5,
+        "percentage": 0.2,
+        "target_percentage": 0.2,
+        "minimum_percentage": 0.18000000000000002,
+        "maximum_percentage": 0.22,
+        "passed": true
+      },
+      "general_home_repair": {
+        "count": 5,
+        "percentage": 0.2,
+        "target_percentage": 0.2,
+        "minimum_percentage": 0.18000000000000002,
+        "maximum_percentage": 0.22,
+        "passed": true
+      },
+      "hvac_maintenance": {
+        "count": 5,
+        "percentage": 0.2,
+        "target_percentage": 0.2,
+        "minimum_percentage": 0.18000000000000002,
+        "maximum_percentage": 0.22,
+        "passed": true
+      },
+      "plumbing_repair": {
+        "count": 5,
+        "percentage": 0.2,
+        "target_percentage": 0.2,
+        "minimum_percentage": 0.18000000000000002,
+        "maximum_percentage": 0.22,
+        "passed": true
+      }
+    },
+    "unexpected_categories": []
+  },
+  "quality_gate": {
+    "passed_count": 23,
+    "failed_count": 2,
+    "pass_rate": 0.92
+  }
+}

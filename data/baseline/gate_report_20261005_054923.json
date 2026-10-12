@@ -1,0 +1,92 @@
+{
+  "step": 2,
+  "step_name": "data_quality_gate",
+  "timestamp_utc": "2026-10-05T05:49:23.191177+00:00",
+  "input_file": "C:\\Personal\\Swapnil\\Training\\GenAI\\NewlineAiAccelerator\\Unit 5 Synthetic Datasets and Data Engineering\\mini-project\\diy-repair-project\\data\\baseline\\generated_qa_20261004180340.jsonl",
+  "output_file": "C:\\Personal\\Swapnil\\Training\\GenAI\\NewlineAiAccelerator\\Unit 5 Synthetic Datasets and Data Engineering\\mini-project\\diy-repair-project\\data\\baseline\\gated_20261005_054923.jsonl",
+  "report_file": "C:\\Personal\\Swapnil\\Training\\GenAI\\NewlineAiAccelerator\\Unit 5 Synthetic Datasets and Data Engineering\\mini-project\\diy-repair-project\\data\\baseline\\gate_report_20261005_054923.json",
+  "total_records": 25,
+  "structural_validation": {
+    "valid_count": 25,
+    "invalid_count": 0,
+    "validation_rate": 1.0,
+    "target_rate": 0.95,
+    "passed_target": true,
+    "failures": {}
+  },
+  "exact_deduplication": {
+    "duplicate_count": 2,
+    "duplicates": [
+      {
+        "duplicate_record_index": 12,
+        "original_record_index": 11,
+        "duplicate_question": "Why does my bathroom exhaust fan make a loud grinding noise and how can I fix it?",
+        "original_question": "Why does my bathroom exhaust fan make a loud grinding noise and how can I fix it?"
+      },
+      {
+        "duplicate_record_index": 22,
+        "original_record_index": 20,
+        "duplicate_question": "How do I fix a leaky kitchen faucet that drips from the spout?",
+        "original_question": "How do I fix a leaky kitchen faucet that drips from the spout?"
+      }
+    ]
+  },
+  "semantic_deduplication": {
+    "enabled": false,
+    "threshold": 0.9,
+    "duplicate_count": 0,
+    "duplicates": []
+  },
+  "category_distribution": {
+    "passed": true,
+    "total_records": 25,
+    "categories": {
+      "appliance_repair": {
+        "count": 5,
+        "percentage": 0.2,
+        "target_percentage": 0.2,
+        "minimum_percentage": 0.18000000000000002,
+        "maximum_percentage": 0.22,
+        "passed": true
+      },
+      "electrical_repair": {
+        "count": 5,
+        "percentage": 0.2,
+        "target_percentage": 0.2,
+        "minimum_percentage": 0.18000000000000002,
+        "maximum_percentage": 0.22,
+        "passed": true
+      },
+      "general_home_repair": {
+        "count": 5,
+        "percentage": 0.2,
+        "target_percentage": 0.2,
+        "minimum_percentage": 0.18000000000000002,
+        "maximum_percentage": 0.22,
+        "passed": true
+      },
+      "hvac_maintenance": {
+        "count": 5,
+        "percentage": 0.2,
+        "target_percentage": 0.2,
+        "minimum_percentage": 0.18000000000000002,
+        "maximum_percentage": 0.22,
+        "passed": true
+      },
+      "plumbing_repair": {
+        "count": 5,
+        "percentage": 0.2,
+        "target_percentage": 0.2,
+        "minimum_percentage": 0.18000000000000002,
+        "maximum_percentage": 0.22,
+        "passed": true
+      }
+    },
+    "unexpected_categories": []
+  },
+  "quality_gate": {
+    "passed_count": 23,
+    "failed_count": 2,
+    "pass_rate": 0.92
+  }
+}

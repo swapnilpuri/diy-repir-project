@@ -1,0 +1,91 @@
+import argparse
+from datetime import datetime, timezone
+from pathlib import Path
+
+from config.settings import (
+    BASELINE_DIR,
+    SEMANTIC_DEDUP_THRESHOLD,
+)
+
+from pipeline.step2_quality_gate import (
+    OUTPUT_TIMESTAMP_FORMAT,
+    resolve_input_file,
+    run_quality_gate,
+)
+
+def run_step2(args):
+    """
+    Execute Step 2 - Data Quality Gate.
+    """
+
+    input_file = resolve_input_file(
+        cli_input=getattr(args, "input", None),
+        baseline_dir=Path(BASELINE_DIR),
+    )
+
+    output_dir = input_file.parent
+
+    timestamp = datetime.now(
+        timezone.utc
+    ).strftime(
+        OUTPUT_TIMESTAMP_FORMAT
+    )
+
+    output_file = (
+        output_dir
+        / f"gated_{timestamp}.jsonl"
+    )
+
+    report_file = (
+        output_dir
+        / f"gate_report_{timestamp}.json"
+    )
+
+    run_quality_gate(
+        input_file=input_file,
+        output_file=output_file,
+        report_file=report_file,
+        enable_semantic_dedup=(
+            not getattr(
+                args,
+                "no_semantic_dedup",
+                False,
+            )
+        ),
+        semantic_threshold=getattr(
+            args,
+            "semantic_threshold",
+            SEMANTIC_DEDUP_THRESHOLD,
+        ),
+    )
+def main():
+    parser = argparse.ArgumentParser(description="DIY Repair Project Main Script")
+    subparsers = parser.add_subparsers(dest='command', required=True, help='Available commands')
+
+    # Subparser for the generate command
+    generate_parser = subparsers.add_parser('generate', help='Generate QA items')
+    generate_parser.add_argument('--count', type=int, default=10, help='Number of QA items to generate per category')
+    generate_parser.add_argument('--corrected', action='store_true', help='Generate corrected QA items based on targeted guidance')
+    generate_parser.add_argument('--guidance', type=str, default=None, help='Targeted guidance for generating corrected QA items')
+
+    # Subparser for the generate command
+    gate_parser = subparsers.add_parser('gate', help='Run quality gate on generated QA items')
+    gate_parser.add_argument('--input', type=Path, default=None, help='Input JSONL file to validate')
+    gate_parser.add_argument('--no-semantic-dedup', action='store_true', help='Disable semantic deduplication')
+    gate_parser.add_argument('--semantic-threshold', type=float, default=0.90, help='Threshold for semantic duplicate detection')
+
+    
+    args = parser.parse_args()
+
+    if args.command == 'generate':
+        from pipeline.step1_generate import generate_qa_allitems
+        generate_qa_allitems(count_per_category=args.count, corrected=args.corrected, targeted_guidance=args.guidance)
+    elif args.command == 'gate':
+        run_step2(args)
+        # from pipeline.step2_quality_gate import run_quality_gate
+        # run_quality_gate(input_file=args.input, enable_semantic_dedup=args.no_semantic_dedup, semantic_threshold=args.semantic_threshold)
+    
+    #print("Hello from diy-repair-project!")
+
+if __name__ == "__main__":
+    main()
