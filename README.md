@@ -1,8 +1,8 @@
 # Home DIY Repair Synthetic Q&A Pipeline
 
-A Python project for generating, filtering, reviewing, and evaluating synthetic home-repair question-and-answer datasets. Each item carries a trace ID and generation metadata through automated quality checks, human labeling, and an independent LLM judge. Analysis reports support judge calibration and targeted improvements to the generator prompt.
+This project builds synthetic home-repair Q&A datasets and checks their quality in six stages: generation, automated checks, human review, LLM judging, analysis, and iteration. Each record keeps its trace ID and model metadata throughout the pipeline, so you can trace a failed answer back to the prompt that produced it.
 
-The default configuration uses local Ollama models. Generator and judge models can also use Instructor's provider integrations; semantic deduplication supports Ollama or OpenAI embeddings.
+The default setup runs locally with Ollama. You can switch the generator and judge to other providers through Instructor, and use either Ollama or OpenAI for embeddings.
 
 ## Contents
 
@@ -58,7 +58,7 @@ Generation covers five categories, with a target share of 20% each:
 | `hvac_maintenance` | Filters, thermostats, vents, basic troubleshooting |
 | `general_home_repair` | Drywall, doors, windows, flooring, basic carpentry |
 
-This is a dataset engineering and evaluation project. Generated repair content requires domain review before use as real-world guidance; passing a heuristic or LLM evaluation does not establish technical correctness or safety.
+The pipeline measures dataset quality. A passing score does not establish that a repair is correct or safe; have someone with repair expertise review the content before using it as practical advice.
 
 ## Setup
 
@@ -69,14 +69,14 @@ This is a dataset engineering and evaluation project. Generated repair content r
 - For the default local setup, a running Ollama server and enough memory to load the configured models.
 - An interactive terminal for human review.
 
-Run the following commands from the `diy-repair-project` directory. Examples use PowerShell.
+Run commands from `diy-repair-project`. The examples below use PowerShell.
 
 ```powershell
 cd .\diy-repair-project
 uv sync
 ```
 
-If your terminal is already in that directory, omit the `cd` command. `uv sync` creates or updates `.venv` using the project's dependencies and lockfile.
+Skip `cd` if you're already in the project directory. `uv sync` installs the locked dependencies into `.venv`.
 
 ### Prepare the Default Local Models
 
@@ -93,11 +93,11 @@ If Ollama is not already running, start it in a separate terminal:
 ollama serve
 ```
 
-The default server address is `http://localhost:11434`. Generation and judging use its `/v1` endpoint through Instructor; embeddings use the Ollama client.
+Ollama defaults to `http://localhost:11434`. The generator and judge connect through Instructor using `/v1`; embedding calls use the Ollama client directly.
 
 ### Create Local Configuration
 
-Create `.env` in the project root with the settings below, or rely on these defaults:
+These are the defaults. To override them, create a `.env` file in the project root:
 
 ```dotenv
 GENERATOR_MODEL=ollama/qwen3.5:9b
@@ -113,9 +113,9 @@ SEMANTIC_DEDUP_THRESHOLD=0.90
 HUMAN_JUDGE_AGREEMENT_TARGET=0.80
 ```
 
-`config/settings.py` loads this file using `python-dotenv`. Existing process environment variables take precedence over `.env` values. Changes take effect when a new command starts.
+`config/settings.py` loads `.env` through `python-dotenv`. Variables already set in your terminal take precedence. Restart the command after changing a setting.
 
-Keep credentials out of version control. The current `.gitignore` does not exclude `.env`; add an appropriate ignore rule before storing provider keys there.
+Before putting API keys in `.env`, add it to `.gitignore`. The current ignore file does not exclude it.
 
 ### Verify the CLI
 
@@ -124,7 +124,7 @@ uv run .\main.py --help
 uv run .\main.py generate --help
 ```
 
-These commands display options without contacting a model.
+Both help commands run without calling a model.
 
 ## Configuration
 
@@ -145,17 +145,17 @@ These commands display options without contacting a model.
 | `HUMAN_JUDGE_AGREEMENT_TARGET` | `0.80` | Required agreement in every dimension for Phase A calibration |
 | `BENCHMARK_DATASET` | `dipenbhuva/home-diy-repair-qa` | Configured reference dataset identifier; inspection module is currently absent |
 
-`MAX_CONCURRENCY` is assigned twice in `settings.py`; the later assignment makes **2** the effective default. Step 4 currently judges records sequentially.
+Watch out for the duplicate `MAX_CONCURRENCY` assignment in `settings.py`: the later value wins, so the default is **2**. This setting controls generation; judging runs sequentially.
 
 ### Alternative Providers
 
-Generator and judge identifiers must include a provider prefix, such as `openai/<model>` or `anthropic/<model>`. `utils/llm_client.py` delegates non-Ollama clients to `instructor.from_provider()`. Supply the selected provider's credentials through its environment configuration, typically `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`.
+Use a provider prefix in generator and judge model names, for example `openai/<model>` or `anthropic/<model>`. For providers other than Ollama, `utils/llm_client.py` calls `instructor.from_provider()`. Set the provider's credentials in the environment, typically `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`.
 
-Embedding configuration is independent of generator and judge configuration. For OpenAI embeddings, set `EMBEDDING_PROVIDER=openai`, choose an appropriate `EMBEDDING_MODEL`, and supply `OPENAI_API_KEY`. Changing the embedding model can change similarity scores, so review the deduplication threshold when switching models.
+Configure embeddings separately from the generator and judge. For OpenAI, set `EMBEDDING_PROVIDER=openai`, set `EMBEDDING_MODEL`, and provide `OPENAI_API_KEY`. Recheck the deduplication threshold when you change embedding models; similarity scores may shift.
 
 ### Constants in Source
 
-These values are configured directly in `config/settings.py`, rather than through `.env`:
+Change these values directly in `config/settings.py`:
 
 | Setting | Current value | Active behavior |
 | --- | --- | --- |
@@ -164,7 +164,7 @@ These values are configured directly in `config/settings.py`, rather than throug
 | Minimum safety information length | `80` characters | Step 2 safety heuristic |
 | Minimum useful tip length | `20` characters | At least one tip must meet this length in Step 2 |
 
-The file also declares a minimum dataset size of 50, a minimum human-label count of 20, dimension pass-rate targets, and an overall pass target of 80%. These declarations are not all enforced by the current pipeline. Human review warns when fewer than 20 items are labeled; comparison currently hardcodes its 80% failure-reduction criterion.
+The settings file also defines a 50-item minimum dataset, at least 20 human labels, per-dimension targets, and an 80% overall pass target. Several are only declared targets: the pipeline does not enforce them. Human review warns below 20 labels, and comparison hardcodes an 80% failure-reduction requirement.
 
 ## Run the Pipeline
 
@@ -190,9 +190,9 @@ uv run .\main.py analyze
 uv run .\main.py iterate
 ```
 
-When `--input` is omitted, each consuming command selects the preceding stage's artifact with the greatest timestamp in its filename from `data/baseline/`. Selection uses the filename timestamp, not file modification time.
+Without `--input`, a command picks the previous stage's newest artifact from `data/baseline/`. 'Newest' means the timestamp in the filename, regardless of when the file was last modified.
 
-Review `gate_report_*.json` before proceeding manually to human review. Unlike `all`, individual commands do not enforce the preceding batch-level structural and category checks automatically.
+Check `gate_report_*.json` before starting human review. When you run stages individually, you must check the batch validation rate and category balance yourself. The `all` command enforces those checks.
 
 ### Run All Six Stages
 
@@ -200,7 +200,7 @@ Review `gate_report_*.json` before proceeding manually to human review. Unlike `
 uv run .\main.py all --count-per-category 10 --human-label-count 20
 ```
 
-This command pauses for human input in Step 3. It stops before labeling if Step 2 fails the structural-validation target or category-distribution check. Step 1's wrapper resolves its newest generated file after generation; subsequent stages receive the artifact returned by the preceding stage.
+`all` pauses for human labels in Step 3. It stops earlier if Step 2 fails the structural-validation or category-balance check. After generation, the Step 1 wrapper looks up the newest generated file; the remaining stages pass their output paths directly to the next stage.
 
 ### Select a Specific Input
 
@@ -209,7 +209,7 @@ uv run .\main.py gate --input .\data\baseline\generated_qa_20261012002210.jsonl
 uv run .\main.py iterate --input .\data\baseline\analysis_20261012_040251.json
 ```
 
-Replace the example filenames with your own artifacts. Relative input paths are resolved from the terminal's working directory. Outputs for Steps 2-6 are written beside the selected input, including when `--input` points outside the default run directory.
+Replace these filenames with files from your run. Relative paths start from your terminal's working directory. Steps 2-6 write their outputs beside the input file, even if it is outside `data/baseline/` or `data/corrected/`.
 
 ### Human Review
 
@@ -224,7 +224,7 @@ Use `--limit 0` to label every accepted item:
 uv run .\main.py human-review --limit 0
 ```
 
-All accepted records are preserved in the Step 3 output. Unreviewed records receive `human_label: null`. Labels are saved after the entire review loop finishes, so interrupting the command can lose that session's input.
+Step 3 keeps every accepted record, including those you haven't reviewed. Unreviewed records have `human_label: null`. Finish the review session before closing the terminal: labels are saved only after the loop completes.
 
 ## Command Reference
 
@@ -256,9 +256,9 @@ The gate applies the following checks:
 4. **Heuristics:** Check basic completeness, safety-text length, tool wording, problem context, and tip length.
 5. **Category balance:** Check all structurally valid records against the 18%-22% range for each configured category, rejecting unexpected categories at the batch level.
 
-The category check runs on structurally valid records before filtering duplicate and heuristic failures. Therefore, a balanced gate report does not guarantee balance among records accepted for review.
+Category balance is checked before duplicate and heuristic failures are removed. Check the accepted records as well: their category mix can differ from the balance reported by the gate.
 
-`gated_*.jsonl` retains both passing and failing records in original order. Each receives `gate_pass`, `gate_failures`, and detailed `gate_result` information. Step 3 filters this file to passing records only. A batch category failure does not automatically set every individual record's `gate_pass` to false.
+`gated_*.jsonl` keeps every record in its original order, with `gate_pass`, `gate_failures`, and `gate_result` added. Step 3 takes only passing records. Category balance is a batch check, so a failed balance check does not mark every record as failed.
 
 ### Six Quality Dimensions
 
@@ -273,9 +273,9 @@ Human reviewers and the LLM judge use the same binary dimensions. The LLM rubric
 | D5 `context_clarity` | Is the problem clear and directly addressed? | Nonblank question and equipment/problem |
 | D6 `tip_usefulness` | Do tips add task-specific value beyond the main steps? | At least one tip with 20 or more characters |
 
-Each score is `0` or `1`. `overall_pass` is derived by the schema and is true only when **all six** scores are 1. An item with five passing dimensions still fails overall.
+Scores are binary: `0` or `1`. The schema sets `overall_pass` to true only when **all six** dimensions pass. Five out of six is still an overall failure.
 
-The judge receives the Q&A content without the human labels or gate results. For each item it returns six scores and six explanations. A failed model call is recorded as `judge_error` with `judge_label: null`, and judging continues with the next record.
+The judge sees the Q&A content, with human labels and gate results withheld. It returns a score and explanation for each dimension. If a call fails, the record gets a `judge_error` and `judge_label: null`; the loop continues.
 
 ### Step 5: Reading the Metrics
 
@@ -285,11 +285,11 @@ The judge receives the Q&A content without the human labels or gate results. For
 - **Segments:** Counts, pass rates, and agreement grouped by category and prompt variant.
 - **Category distribution:** Shares among records in the judged file, compared with a fixed uniform 20% reference.
 
-Always inspect `human.count`, `judge.count`, and `agreement.paired_count`. Human pass rates usually describe a subset, whereas judge rates describe all successfully judged items. Missing judge labels are excluded from pass-rate calculations. Agreement is simple matching accuracy, without a chance correction or confidence interval. A missing metric is saved as `null`; charts currently display such values as zero.
+Read `human.count`, `judge.count`, and `agreement.paired_count` before interpreting the rates. Humans usually label a subset; judge rates cover all successfully judged records. Failed judge calls are excluded. Agreement is the fraction of matching scores, with no chance correction or confidence interval. Reports store missing metrics as `null`, but charts display them as zero, so check the JSON when a chart looks suspicious.
 
 ## Iteration and Comparison
 
-Step 6 produces a diagnosis. Prompt edits, reruns, and corrected generation are manual actions.
+Step 6 tells you what to work on next. You still need to edit the prompts and run the pipeline again.
 
 ```mermaid
 flowchart TD
@@ -308,7 +308,7 @@ flowchart TD
 
 If any dimension's agreement is missing or below `HUMAN_JUDGE_AGREEMENT_TARGET`, the status is `judge_recalibration_required` and `phase_b` is `null`.
 
-Review disagreements and judge explanations, update the affected rubric in `config/judge_prompts.py`, and increment `JUDGE_PROMPT_VERSION` to preserve provenance. Rerun judging on the **same** human-labeled artifact:
+Read the disagreements and judge explanations, then adjust the relevant rubric in `config/judge_prompts.py`. Increment `JUDGE_PROMPT_VERSION` so the output records identify the change. Judge the **same** human-labeled file again:
 
 ```powershell
 uv run .\main.py judge --input .\data\baseline\human_labeled_<timestamp>.jsonl
@@ -316,22 +316,22 @@ uv run .\main.py analyze --input .\data\baseline\judged_<new_timestamp>.jsonl
 uv run .\main.py iterate --input .\data\baseline\analysis_<new_timestamp>.json
 ```
 
-Replace placeholders with actual filenames. Explicit inputs keep the calibration run tied to the intended dataset.
+Replace the placeholders with your filenames. Use explicit inputs here so calibration stays on the same dataset.
 
 ### Phase B: Improve the Generator
 
 When every dimension meets the agreement target, Phase A returns `judge_calibrated`. Phase B selects the category with the lowest judge overall pass rate, then its lowest-pass dimension. It reports `generator_correction_required`, or `insufficient_data` if no usable judged segment exists.
 
-Review this recommendation and make one targeted change. You can edit `config/generator_prompts.py` and increment `GENERATOR_PROMPT_VERSION`, or supply an addendum with `--guidance`:
+Use the recommendation to make one focused change. Edit `config/generator_prompts.py` and increment `GENERATOR_PROMPT_VERSION`, or pass extra instructions through `--guidance`:
 
 ```powershell
 uv run .\main.py all --corrected --count-per-category 10 --human-label-count 20 --guidance "For plumbing repairs, include task-specific shutoff and leak-check precautions."
 uv run .\main.py compare
 ```
 
-Guidance is appended to every generation prompt, even when its text targets one category. Records generated with nonempty guidance receive a prompt variant ending in `_corrected`. Merely passing `--corrected` changes the output directory without changing the prompt variant.
+`--guidance` adds text to every generation prompt, including prompts for categories outside the one named in the guidance. Nonempty guidance adds `_corrected` to the recorded prompt variant. On its own, `--corrected` only selects the output directory.
 
-Keep the generator/judge configuration, sample size, and review approach comparable between runs. If judge calibration changes, reevaluate the baseline with the calibrated rubric before attributing an improvement to the generator.
+Keep model settings, sample sizes, and human review consistent between runs. If you change the judge rubric, score the baseline again with that rubric before comparing generator results.
 
 ### Compare Results
 
@@ -373,7 +373,7 @@ Labels include the trace ID, labeler (`human` or `llm_judge`), UTC timestamp, si
 
 Step 5 writes agreement to its aggregate report; it does not populate the optional per-trace `agreement` field. Legacy timestamp and prompt fields remain available in `TraceRecord` for compatibility.
 
-An illustrative Step 1 record is shown below. Actual records also include optional lifecycle fields initialized to `null` or empty collections. In a JSONL artifact, the whole record is serialized onto one line.
+This is a sample Step 1 record. Actual output also includes optional lifecycle fields set to `null` or empty collections. It is formatted here for readability; JSONL files store each record on one line.
 
 ```json
 {
@@ -441,7 +441,7 @@ data/
       <chart_name>_<timestamp>.png
 ```
 
-Use `utils/jsonl_utils.py`'s `read_jsonl()` for record files and `read_json()` for reports. A pretty-printed `.json` report cannot be read one line at a time as JSONL. Writers create output parent directories as needed.
+Use `read_jsonl()` from `utils/jsonl_utils.py` for record files and `read_json()` for reports. Step 6 reads a complete JSON report; treating that file as JSONL will fail. Writers create missing output directories.
 
 ## Project Structure
 
@@ -491,7 +491,7 @@ diy-repair-project/
   test_code.py                  # Scratch script with a stale util import
 ```
 
-The active entry point is `main.py`. Settings also define benchmark, report, log, and root visualization directories; the main pipeline currently writes reports and charts beside its input artifacts and does not wire in the event logging helper.
+Start with `main.py`. Settings define separate benchmark, report, log, and visualization paths, but the active pipeline writes reports and charts beside its inputs. The event logging helper is not connected to the pipeline.
 
 ## Testing
 
@@ -502,9 +502,9 @@ uv sync --group dev
 uv run pytest tests/ --ignore=tests/test_embedding_client.py -v
 ```
 
-Pipeline tests mock generator/judge clients, embeddings, and human input. They write artifacts to temporary directories and render charts using Matplotlib's noninteractive `Agg` backend. Coverage includes all six stages, comparison, a complete mocked workflow, and stopping before review when batch gate checks fail. The Step 6 tests also guard against reading a pretty-printed JSON analysis report as JSONL.
+The offline tests mock model calls, embeddings, and human input. They cover all six stages, comparison, the full workflow, and stopping before human review when batch checks fail. Outputs go to temporary directories, and chart tests use Matplotlib's `Agg` backend. Step 6 also has a regression test for loading the analysis report as JSON rather than JSONL.
 
-The separate embedding test makes a real request to the configured embedding provider. With defaults, Ollama must be running and `nomic-embed-text` must be available. It checks vector count and consistent nonempty dimensions, without measuring embedding accuracy. Run it explicitly, or run the whole test directory when the provider is available:
+The embedding test calls the configured provider. With the defaults, start Ollama and pull `nomic-embed-text` first. The test checks vector count and shape; it does not measure embedding quality. Run it separately, or run all tests once the provider is ready:
 
 ```powershell
 uv run pytest tests/test_embedding_client.py -v
@@ -513,7 +513,7 @@ uv run pytest tests/ -v
 
 Use `pytest tests/` rather than unrestricted discovery: root-level `test_code.py` is a scratch script importing nonexistent `util.llm_client` and can cause collection errors.
 
-For a manual integration check, run each stage on a small generated batch and inspect the gate report, judge errors, paired label count, analysis, and iteration log. A reduced batch or review count can help validate mechanics, but does not meet the declared 50-item and 20-human-label goals.
+For an integration check, run a small batch through each stage. Inspect the gate report, judge errors, paired label count, analysis, and iteration log. A small run checks that the pieces work together; use at least 50 generated items and 20 human labels when assessing the project's stated dataset goals.
 
 ## Troubleshooting
 
@@ -533,14 +533,14 @@ For a manual integration check, run each stage on a small generated batch and in
 | `inspect-benchmark` fails to import | `benchmark.inspect_samples` is absent | Treat benchmark inspection as an incomplete extension |
 | Pytest collection fails on `util` | Scratch `test_code.py` was collected | Run `uv run pytest tests/ -v` |
 
-When continuing a particular run, prefer explicit `--input` paths to avoid selecting an unrelated newer artifact.
+When resuming a run, pass `--input` explicitly. Otherwise, a newer file from another run can be selected.
 
 ## Current Limitations
 
-- **Human sampling:** Review labels the first accepted items in file order. Generation preserves category-grouped order, so the default sample can overrepresent early categories. There is no random or stratified sampling, saved-progress resume, or multi-reviewer reconciliation.
-- **Benchmark integration:** The configured dataset identifier is not currently loaded by the active pipeline. Distribution reports use a fixed 20% reference rather than measured benchmark statistics.
-- **Acceptance targets:** The declared minimum dataset size and most dimension/overall targets are not enforced. Step 6 checks judge agreement, then recommends correction for a usable segment even if its pass rate is already perfect.
-- **Iteration automation:** Step 6 neither edits prompts nor launches corrected runs. `compare` reports reduction across the full judged dataset, without measuring the targeted category/dimension separately or statistical significance.
-- **Reproducibility:** Prompts and model identifiers are recorded, but there is no generation seed, model-weight pinning, or run manifest capturing every configuration value. Step 1's newest-file lookup can be ambiguous during simultaneous runs; artifact names have second-level precision and can collide.
-- **Scale and failure recovery:** Semantic deduplication uses pairwise comparisons, giving quadratic comparison cost. Files are loaded into memory. Generation does not checkpoint completed calls; a surfaced generation error can prevent the batch from being saved. Judging saves per-item errors but has no separate automatic recovery workflow.
-- **Coverage:** Offline tests verify pipeline mechanics with mocked model responses, and a separate live test checks embedding shape. Model quality, real provider compatibility, judge calibration on representative data, and repair accuracy require further verification.
+- **Review sampling is biased by file order.** Human review takes the first accepted records, and generation groups records by category. The default sample can therefore favor early categories. Random or stratified sampling, review resume, and reviewer reconciliation are not implemented.
+- **The benchmark is configured but not integrated.** The active pipeline does not load it. Distribution reports compare against a fixed 20% per category.
+- **Some targets are not enforced.** This includes the minimum dataset size and most dimension and overall pass targets. After checking agreement, Step 6 recommends a generator correction whenever it finds a usable segment, even if that segment already has a perfect pass rate.
+- **Iteration still needs manual work.** Step 6 does not edit prompts or start corrected runs. `compare` measures failure reduction across the whole judged dataset; it does not isolate the targeted category or dimension, or test statistical significance.
+- **Runs are traceable, but not fully reproducible.** Records include prompt and model identifiers. They do not capture a generation seed, pinned model weights, or a complete configuration manifest. Concurrent runs can also confuse Step 1's newest-file lookup, and filenames can collide when written in the same second.
+- **Large batches and interrupted runs need more work.** Semantic deduplication uses pairwise comparisons, so comparison cost grows quadratically. Files are loaded into memory. Generation has no checkpoints, and an error can prevent the batch from being saved. Judging records per-item errors, but retrying those failures is manual.
+- **Tests cover mechanics, not model quality.** Offline tests use mocked responses, and the live embedding test checks shape. Real provider behavior, judge calibration on representative samples, and repair accuracy still need to be checked with actual runs and domain review.
